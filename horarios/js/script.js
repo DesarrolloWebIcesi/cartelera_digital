@@ -16,13 +16,14 @@ jQuery(document).on("ready",function(){
 function readData(){
   hora_actual = new Date();
   data = null;
-  if(!isNaN(floor) || floor==null){
+  if(!isNaN(floor) || floor==null || !isNaN(building) || building==null){
     $.ajax({
       url: 'controller/ProcessController.php',
       dataType: 'json',
       type: 'POST',
       data: {
-        floor: floor
+        floor: floor,
+        building:building
       },
       error: function(XMLHttpRequest, textStatus, errorThrown) {
         if (errorThrown != 'abort' && XMLHttpRequest.status != 0) {
@@ -61,14 +62,14 @@ function renderColumnTitle(data,hora){
         $("#rooms-labels").append($titlePage); 
         $("#rooms-columns-container").append($columnPage);
       }
-      var titleColumn='<div id="column-title-'+i+'" class="room-header ui-corner-all ui-state-default">'+room.id+'</div>';
+      var titleColumn='<div id="column-title-'+i+'" class="room-header ui-corner-all ui-state-default">'+room.name+'</div>';
       $("#title-page-"+j).append(titleColumn);
       var roomColumn = $('<div id="column-'+i+'" class="room-body ui-widget" />');
       $("#column-page-"+j).append(roomColumn);
       renderReservations(roomColumn,room,hora);
     });
   }else{
-    $("#rooms-columns-container").append('<div class="ui-state-error no-rooms"><span>No hay salas disponibles para el piso '+floor+'</span></div>');
+    $("#rooms-columns-container").append('<div class="ui-state-error no-rooms"><span>No hay espacios fisicos en el bloque '+building+' piso '+floor+'</span></div>');
   }
 //displayPage(true);
 }

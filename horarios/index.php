@@ -5,7 +5,7 @@
  * @author David Andrés Manzano - damanzano
  * @since 2012-05-15
  *
- * @method Este aplicación funcioonara bajo la url http://www.icesi.edu.co/cartelera_virtual/horarios?view=XXX
+ * @method Este aplicación funcionara bajo la url http://www.icesi.edu.co/cartelera_virtual/horarios?view=XXX
  * donde XXX corresponde al la vista desde la cual se vea la aplicación.
  * 
  * Inicalmente la aplicación se piensa desplegar sobre las pantallas de los pasiilos, sin embargo,
@@ -20,14 +20,19 @@
  */
 include_once 'Config.php';
 
-/* error_reporting(E_ALL);
-  ini_set('display_errors', '1'); */
+//error_reporting(E_ALL);
+//ini_set('display_errors', '1');
 setlocale(LC_TIME, 'es_CO');
 $view = "PC";
+$building = null;
 $floor = null;
 if (isset($_GET['view']) && $_GET['view'] != null)
 {
   $view = $_GET['view'];
+}
+if (isset($_GET['building']) && $_GET['building'] != null)
+{
+  $building = $_GET['building'];
 }
 if (isset($_GET['floor']) && $_GET['floor'] != null)
 {
@@ -35,16 +40,19 @@ if (isset($_GET['floor']) && $_GET['floor'] != null)
 }
 ?>
 <!DOCTYPE html>
-<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
-<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="es"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="es"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="es"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="es"> <!--<![endif]-->
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <!--
+    Se comenta la siguiente meta etiqueta para pasar validación de la w3c
     <meta HTTP-EQUIV="Pragma" CONTENT="no-cache" />
     <meta HTTP-EQUIV="Expires" CONTENT="-1" />
-    <title>Horario de Salas de computo</title>
+    -->
+    <title>Horario de espacios físicos</title>
     <meta name="description" content=""/>
     <meta name="author" content=""/>
 
@@ -62,7 +70,11 @@ if (isset($_GET['floor']) && $_GET['floor'] != null)
             Your browser is <em>ancient!</em> <a href="http://browsehappy.com/">Upgrade to a different browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to experience this site.
         </p>
     <![endif]-->
-    <header><h1 class="ui-state-active ui-widget-header">Programaci&oacute;n de salas de c&oacute;mputo - <?php echo utf8_encode(strftime('%A %d de %B de %Y', time())) ?></h1></header>
+    <header>
+        <h1 class="ui-state-active ui-widget-header">
+            Programaci&oacute;n de espacios f&iacute;sicos - <?php echo utf8_encode(strftime('%A %d de %B de %Y', time())) ?>
+        </h1>
+    </header>
     <div role="main" id="main">
       <div id="calendar" class="ui-widget ui-corner-all">
         <div id="header-container" class="clearfix">
@@ -108,7 +120,11 @@ if (isset($_GET['floor']) && $_GET['floor'] != null)
 
     <!-- Needed for the bussines scripts -->
     <script>
+      var building;  
       var floor;
+      <?php if ($building != null){ ?>
+      building = '<?php echo $building; ?>';
+      <?php } ?>
       <?php if ($floor != null){ ?>
       floor = '<?php echo $floor; ?>';
       <?php } ?>
@@ -121,11 +137,11 @@ if (isset($_GET['floor']) && $_GET['floor'] != null)
 
     <!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
          mathiasbynens.be/notes/async-analytics-snippet -->
-    <script>
+<!--    <script>
       var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
       (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
         g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
         s.parentNode.insertBefore(g,s)}(document,'script'));
-    </script>
+    </script>-->
   </body>
 </html>

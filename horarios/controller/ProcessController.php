@@ -28,6 +28,15 @@ class ProcessController
    */
   public static function main()
   {
+    $building = null;
+    if (isset($_POST['building']) && $_POST['building'] != '' && is_numeric($_POST['building']))
+    {
+      $building = $_POST['building'];
+    }
+    if(isset($_GET['building'])){
+      $building = $_GET['building'];
+    }
+      
     $floor = null;
     if (isset($_POST['floor']) && $_POST['floor'] != '' && is_numeric($_POST['floor']))
     {
@@ -37,7 +46,7 @@ class ProcessController
       $floor = $_GET['floor'];
     }
     
-    $rooms = DAController::getComputerRooms($floor);
+    $rooms = DAController::getAllPhysicalSpaces($floor, $building);
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET');
     header('Content-type: application/json');
@@ -51,21 +60,23 @@ class ProcessController
    * @author damanzano
    * @since 2012-05-15
    * @since 2013-02-24
-   * @version 1.1 damanzano Se comentó la linea 67 debido a que era no cumplía ninguna funcionalidad y adicionalmente estaba generando errores 
+   * @version 1.1 damanzano Se comentó la linea 67 debido a que no cumplía ninguna funcionalidad y adicionalmente estaba generando errores 
    * en el servidor por el cambio de versión de php
    */
   private static function jsonData($rooms)
   {
     $jsonRooms = '';
-    /*echo '<pre>';
-    print_r($rooms);
-    echo '</pre>';*/  
+//    echo '<pre>';
+//    print_r($rooms);
+//    echo '</pre>';
     foreach ($rooms as $room)
     {
-      $jsonRooms.=$room->jsonForm() . ',';
+        if($jsonRooms!=''){
+            $jsonRooms.=",".$room->jsonForm();
+        }else{
+            $jsonRooms.=$room->jsonForm();
+        }
     }
-    //$jsonReservations = substr($jsonReservations, 0, strlen($jsonReservations) - 1);
-    $jsonRooms = substr($jsonRooms, 0, strlen($jsonRooms) - 1);
     return '{"rooms":[' . $jsonRooms . ']}';
   }
 
