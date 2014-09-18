@@ -59,6 +59,7 @@ class DAController {
      */
     public static function getAllPhysicalSpaces($pFloor = null, $pBuilding = null) {
         if (self::$physicalSpaces == null || empty(self::$physicalSpaces)) {
+            //echo "There are no physical space fecthcing data from database <br/>";
             self::fillData($pFloor, $pBuilding);
         }
         return self::$physicalSpaces;
@@ -127,7 +128,7 @@ class DAController {
                 $physicalSpace->setName($dataBase->dato($queryId, 2));
                 self::$physicalSpaces[$physicalSpace->getId()] = $physicalSpace;
                 if ($selectedRooms != "") {
-                    $selectedRooms.="'" . $dataBase->dato($queryId, 1) . "',";
+                    $selectedRooms.=",'" . $dataBase->dato($queryId, 1) . "'";
                 } else {
                     $selectedRooms.="'" . $dataBase->dato($queryId, 1) . "'";
                 }
@@ -135,6 +136,7 @@ class DAController {
             //print_r(self::$physicalSpaces);
             //2.Obtain the reservations only if there are rooms for the building and floor selected
             if (count(self::$physicalSpaces) > 0) {
+                //echo "Fetching reservation for selected physical space <br/>";
                 $sqlQuery = "select trunc(dia) dia_reserva,sala,hora,
                   descripcion||decode(reserva,'S',decode(descripcion,null,'.')) descripcion,
                   video_beam,reserva,inicio_res,fin_res
@@ -159,6 +161,7 @@ class DAController {
                     $time = $dataBase->dato($queryId, 3);
 
                     if (($isReservation == "S" && $reservetionInit == "S") || ($isReservation == "S" && $time == 25200)) {
+                        //echo "New reservation found, starting new reservation object instance <br/>";
                         $reservation = new Reservation();
                         $reservation->setId($dataBase->dato($queryId, 2) . "-" . $time);
                         $reservation->setDescription($description);
@@ -169,6 +172,7 @@ class DAController {
                         $reservation->addRequestData($description);
                     }
                     if ($reservation != null && $isReservation == "S" && $reservationEnd == "S") {
+                        //echo "End of reservation found adding this reservation to physical space: ".$reservedRoom->getId()." <br/>";
                         $reservation->setEndHour($time + 1800);
                         $reservedRoom->addReservation($reservation);
                         self::$reservations[] = $reservation;

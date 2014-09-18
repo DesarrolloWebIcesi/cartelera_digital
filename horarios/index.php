@@ -20,8 +20,8 @@
  */
 include_once 'Config.php';
 
-//error_reporting(E_ALL);
-//ini_set('display_errors', '1');
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 setlocale(LC_TIME, 'es_CO');
 $view = "PC";
 $building = null;

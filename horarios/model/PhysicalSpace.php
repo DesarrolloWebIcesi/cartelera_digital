@@ -9,7 +9,7 @@
 /**
  * Representa un espacio físico en el sistema
  *
- * @author David Andrés Maznzano Herrera <damanzano>
+ * @author David Andrés Manzano Herrera <damanzano>
  */
 class PhysicalSpace {
 
