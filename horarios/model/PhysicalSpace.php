@@ -45,6 +45,10 @@ class PhysicalSpace {
         $this->reservations[$reservation->getId()] = $reservation;
     }
 
+    /***
+     * Muestra un objeto de esta clase en formato json
+     * @return string Un objeto de esta clase en formato json.
+     */
     public function jsonForm() {
         $jsonReservations = "";
         foreach ($this->reservations as $reservation) {
@@ -65,7 +69,7 @@ class PhysicalSpace {
                 $jsonReservations.= $reservation->jsonForm();
             }
         }
-        $json = '{"id":"' . $this->id . '", "name":"' . htmlentities($this->name) . '", "reservations":[' . $jsonReservations . ']}';
+        $json = '{"id":"' . $this->id . '", "name":"' . utf8_encode($this->name) . '", "reservations":[' . $jsonReservations . ']}';
         return $json;
     }
 
