@@ -1,11 +1,12 @@
 <?php
+require_once 'PhysicalSpace.php';
 require_once 'Reservation.php';
 /**
  * Representa una Sala de computo
  *
  * @author David Andrés Manzano Herrera - damanzano
  */
-class ComputerRoom {
+class ComputerRoom extends PhysicalSpace{
     private $id;
     private $name;
     private $reservations=array();

@@ -1,5 +1,5 @@
 <?php
-require_once 'ComputerRoom.php';
+require_once 'PhysicalSpace.php';
 /**
  * Representa una reservación realizada sen una sala de computo.
  *
@@ -10,7 +10,7 @@ class Reservation {
     private $initHour;
     private $endHour;
     private $description;    
-    private $computerRoom;
+    private $physicalSpace;
     private $requestData=array();
     
     public function getId() {
@@ -45,12 +45,12 @@ class Reservation {
         $this->description = $description;
     }
 
-    public function getComputerRoom() {
-        return $this->computerRoom;
+    public function getPhysicalSpace() {
+        return $this->physicalSpace;
     }
 
-    public function setComputerRoom($computerRoom) {
-        $this->computerRoom = $computerRoom;
+    public function setPhysicalSpace($physicalSpace) {
+        $this->physicalSpace = $physicalSpace;
     }
     
     public function getRequestData() {
@@ -65,9 +65,18 @@ class Reservation {
         $this->requestData[]=$data;
     }
     
+    /***
+     * Muestra un objeto de esta clase en formato json
+     * @return string Un objeto de esta clase en formato json.
+     */
     public function jsonForm(){
-        $json='{"id":"'.$this->id.'", "description":"'.htmlentities(addslashes(trim(preg_replace('/\s+/', ' ', $this->description)))).'", "initHour":"'.$this->initHour.'", 
-            "endHour":"'.$this->endHour.'", "computerRoom":"'.$this->computerRoom->getId().'", "requester":"'.htmlentities(str_replace(':',' ',$this->requestData[1])).'"}';
+        $requester = '-';
+        if(count($this->requestData)>1){
+            $requester = utf8_encode(addslashes(trim(preg_replace(str_replace(':',' ',$this->requestData[1])))));
+        }
+        $json='{"id":"'.$this->id.'", "description":"'.utf8_encode(addslashes(trim(preg_replace('/\s+/', ' ', $this->description)))).'", "initHour":"'.$this->initHour.'", 
+            "endHour":"'.$this->endHour.'", "computerRoom":"'.$this->physicalSpace->getId().'", "requester":"'.$requester.'"}';
+            //"endHour":"'.$this->endHour.'", "requester":"'.htmlentities(str_replace(':',' ',$this->requestData[1])).'"}';
         return $json;
     }
 }
